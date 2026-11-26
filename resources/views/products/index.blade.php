@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Our Products - FazBite')
@@ -212,6 +211,10 @@
         <div class="row g-4">
 
             @forelse($products as $product)
+                @php
+                    $rawImageName = $product->image ? basename($product->image) : '';
+                    $jpgFallbackName = $rawImageName ? preg_replace('/\.jpeg$/i', '.jpg', $rawImageName) : '';
+                @endphp
 
                 <div class="col-6 col-lg-3">
 
@@ -223,10 +226,11 @@
 
                                 @if($product->image)
                                     <img
-                                        src="{{ asset('storage/' . $product->image) }}"
+                                        src="{{ asset('storage/' . $rawImageName) }}"
+                                        data-jpg-fallback="{{ asset('storage/' . $jpgFallbackName) }}"
                                         alt="{{ $product->name }}"
                                         loading="lazy"
-                                        onerror="this.onerror=null;this.src='https://placehold.co/600x600/f5efe4/76543e?text=FazBite';"
+                                        onerror="if (!this.dataset.triedJpg && this.dataset.jpgFallback && this.src !== this.dataset.jpgFallback) { this.dataset.triedJpg = '1'; this.src = this.dataset.jpgFallback; } else { this.onerror = null; this.src = 'https://placehold.co/600x600/f5efe4/76543e?text=FazBite'; }"
                                     >
                                 @else
                                     <img

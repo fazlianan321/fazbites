@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', $product->name . ' - FazBite')
@@ -105,11 +104,17 @@
 
             <div class="col-lg-6">
 
+                @php
+                    $rawProductImage = $product->image ? basename($product->image) : '';
+                    $jpgProductFallback = $rawProductImage ? preg_replace('/\.jpeg$/i', '.jpg', $rawProductImage) : '';
+                @endphp
+
                 <div class="detail-image">
                     <img
-                        src="{{ $product->image ? asset('storage/' . $product->image) : 'https://placehold.co/800x800/f5efe4/76543e?text=FazBite' }}"
+                        src="{{ $product->image ? asset('storage/' . $rawProductImage) : 'https://placehold.co/800x800/f5efe4/76543e?text=FazBite' }}"
+                        data-jpg-fallback="{{ $product->image ? asset('storage/' . $jpgProductFallback) : '' }}"
                         alt="{{ $product->name }}"
-                        onerror="this.onerror=null;this.src='https://placehold.co/800x800/f5efe4/76543e?text=FazBite';"
+                        onerror="if (!this.dataset.triedJpg && this.dataset.jpgFallback && this.src !== this.dataset.jpgFallback) { this.dataset.triedJpg = '1'; this.src = this.dataset.jpgFallback; } else { this.onerror = null; this.src = 'https://placehold.co/800x800/f5efe4/76543e?text=FazBite'; }"
                     >
                 </div>
 
@@ -168,6 +173,10 @@
         <div class="row g-4">
 
             @foreach($relatedProducts as $related)
+                @php
+                    $rawRelatedImage = $related->image ? basename($related->image) : '';
+                    $jpgRelatedFallback = $rawRelatedImage ? preg_replace('/\.jpeg$/i', '.jpg', $rawRelatedImage) : '';
+                @endphp
 
                 <div class="col-6 col-lg-3">
 
@@ -176,10 +185,11 @@
                         <div class="product-card">
 
                             <img
-                                src="{{ $related->image ? asset('storage/' . $related->image) : 'https://placehold.co/600x600/f5efe4/76543e?text=FazBite' }}"
+                                src="{{ $related->image ? asset('storage/' . $rawRelatedImage) : 'https://placehold.co/600x600/f5efe4/76543e?text=FazBite' }}"
+                                data-jpg-fallback="{{ $related->image ? asset('storage/' . $jpgRelatedFallback) : '' }}"
                                 alt="{{ $related->name }}"
                                 loading="lazy"
-                                onerror="this.onerror=null;this.src='https://placehold.co/600x600/f5efe4/76543e?text=FazBite';"
+                                onerror="if (!this.dataset.triedJpg && this.dataset.jpgFallback && this.src !== this.dataset.jpgFallback) { this.dataset.triedJpg = '1'; this.src = this.dataset.jpgFallback; } else { this.onerror = null; this.src = 'https://placehold.co/600x600/f5efe4/76543e?text=FazBite'; }"
                             >
 
                             <div class="product-info">

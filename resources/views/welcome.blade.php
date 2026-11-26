@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -781,7 +780,7 @@
 
             <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between gap-2">
                 <span>
-                    &copy; {{ date('Y') }} FazBite. All Rights Reserved.
+                    © {{ date('Y') }} FazBite. All Rights Reserved.
                 </span>
 
                 <span>

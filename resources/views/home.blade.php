@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'FazBite | Premium Artisan Bakery')
@@ -77,16 +76,16 @@
 
                     <div class="hero-image-main">
                         <img
-                            src="{{ asset('storage/products/3.jpeg') }}"
+                            src="{{ asset('storage/logo-fazbite.jpg') }}"
                             alt="FazBite Premium Chocolate Cake"
-                            onerror="this.src='https://placehold.co/750x850/f0e5d5/493326?text=FazBite+Bakery'">
+                            onerror="this.onerror=null;this.src='https://placehold.co/750x850/f0e5d5/493326?text=FazBite+Bakery';">
                     </div>
 
                     <div class="hero-image-accent">
                         <img
-                            src="{{ asset('storage/products/2.jpeg') }}"
+                            src="{{ asset('storage/2.jpg') }}"
                             alt="Fresh Butter Croissant"
-                            onerror="this.src='https://placehold.co/300x300/e8ded0/493326?text=Fresh+Pastry'">
+                            onerror="this.onerror=null;this.src='https://placehold.co/300x300/e8ded0/493326?text=Fresh+Pastry';">
                     </div>
 
                     <div class="hero-floating-card animate-float">
@@ -155,16 +154,16 @@
 
                     <div class="about-image-main">
                         <img
-                            src="{{ asset('storage/products/1.jpeg') }}"
+                            src="{{ asset('storage/1.jpg') }}"
                             alt="Fresh Artisan Bread"
-                            onerror="this.src='https://placehold.co/650x750/f0e5d5/493326?text=Artisan+Bread'">
+                            onerror="this.onerror=null;this.src='https://placehold.co/650x750/f0e5d5/493326?text=Artisan+Bread';">
                     </div>
 
                     <div class="about-image-small">
                         <img
-                            src="{{ asset('storage/products/6.jpeg') }}"
+                            src="{{ asset('storage/6.jpg') }}"
                             alt="Fresh Cinnamon Roll"
-                            onerror="this.src='https://placehold.co/300x350/e8ded0/493326?text=Cinnamon+Roll'">
+                            onerror="this.onerror=null;this.src='https://placehold.co/300x350/e8ded0/493326?text=Cinnamon+Roll';">
                     </div>
 
                     <div class="about-stamp">
@@ -305,6 +304,10 @@
         <div class="row g-4 mt-3">
 
             @forelse($featuredProducts as $product)
+                @php
+                    $rawImageName = $product->image ? basename($product->image) : '';
+                    $jpgFallbackName = $rawImageName ? preg_replace('/\.jpeg$/i', '.jpg', $rawImageName) : '';
+                @endphp
                 <div class="col-6 col-lg-3 reveal">
 
                     <article class="premium-product-card">
@@ -314,9 +317,11 @@
 
                             @if($product->image)
                                 <img
-                                    src="{{ asset('storage/'.$product->image) }}"
+                                    src="{{ asset('storage/'.$rawImageName) }}"
+                                    data-jpg-fallback="{{ asset('storage/'.$jpgFallbackName) }}"
                                     alt="{{ $product->name }}"
-                                    loading="lazy">
+                                    loading="lazy"
+                                    onerror="if (!this.dataset.triedJpg && this.dataset.jpgFallback && this.src !== this.dataset.jpgFallback) { this.dataset.triedJpg = '1'; this.src = this.dataset.jpgFallback; } else { this.onerror = null; this.src = 'https://placehold.co/500x600/f0e5d5/493326?text=FazBite'; }">
                             @else
                                 <img
                                     src="https://placehold.co/500x600/f0e5d5/493326?text=FazBite"
@@ -409,10 +414,10 @@
 
             <div class="brand-promo-image">
                 <img
-                    src="{{ asset('storage/products/5.jpeg') }}"
+                    src="{{ asset('storage/5.jpg') }}"
                     alt="FazBite Strawberry Shortcake"
                     loading="lazy"
-                    onerror="this.src='https://placehold.co/600x650/e8ded0/493326?text=Sweet+Moments'">
+                    onerror="this.onerror=null;this.src='https://placehold.co/600x650/e8ded0/493326?text=Sweet+Moments';">
             </div>
 
             <div class="promo-decoration">
@@ -1209,307 +1214,5 @@
         background: white;
     }
 
-    .value-card {
-        text-align: center;
-        padding: 30px 20px;
-        height: 100%;
-        transition: transform .4s;
-    }
-
-    .value-card:hover {
-        transform: translateY(-8px);
-    }
-
-    .value-icon {
-        width: 65px;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 22px;
-        background: var(--ivory);
-        color: var(--gold);
-        font-size: 22px;
-        transition: all .4s;
-    }
-
-    .value-card:hover .value-icon {
-        background: var(--brown);
-        color: white;
-        transform: rotateY(180deg);
-    }
-
-    .value-card h4 {
-        font-family: 'Playfair Display', serif;
-        color: var(--brown);
-        font-size: 18px;
-        margin-bottom: 12px;
-    }
-
-    .value-card p {
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.9;
-    }
-
-
-    /* FINAL CTA */
-
-    .final-cta-section {
-        padding: 110px 0;
-        background: var(--ivory);
-    }
-
-    .final-cta-section h2 {
-        font-family: 'Playfair Display', serif;
-        color: var(--brown);
-        font-size: clamp(38px, 5vw, 60px);
-        line-height: 1.25;
-        margin: 20px 0;
-    }
-
-    .final-cta-section h2 span {
-        color: var(--gold);
-        font-style: italic;
-        display: block;
-    }
-
-    .final-cta-section p {
-        color: var(--muted);
-        font-size: 13px;
-        margin-bottom: 30px;
-    }
-
-
-    /* RESPONSIVE */
-
-    @media (max-width: 991px) {
-
-        .hero-section {
-            padding: 70px 0 90px;
-        }
-
-        .hero-visual {
-            margin-top: 10px;
-        }
-
-        .hero-image-main {
-            height: 470px;
-        }
-
-        .about-section,
-        .category-section,
-        .featured-section,
-        .values-section {
-            padding: 80px 0;
-        }
-
-        .brand-promo-content {
-            padding: 40px;
-        }
-    }
-
-    @media (max-width: 767px) {
-
-        .hero-section {
-            padding: 55px 0 80px;
-        }
-
-        .hero-title {
-            font-size: 52px;
-            letter-spacing: -1.5px;
-        }
-
-        .hero-description {
-            font-size: 13px;
-        }
-
-        .hero-stats {
-            gap: 16px;
-            margin-top: 40px;
-        }
-
-        .hero-stat h3 {
-            font-size: 21px;
-        }
-
-        .hero-stat p {
-            font-size: 9px;
-        }
-
-        .hero-visual {
-            padding: 0 15px 40px;
-        }
-
-        .hero-image-main {
-            height: 400px;
-        }
-
-        .hero-image-accent {
-            width: 135px;
-            height: 135px;
-        }
-
-        .hero-floating-card {
-            right: 0;
-            bottom: 65px;
-            padding: 12px;
-        }
-
-        .hero-decoration {
-            width: 110px;
-            height: 110px;
-        }
-
-        .hero-image-caption {
-            right: 15px;
-            font-size: 8px;
-        }
-
-        .about-visual {
-            padding-right: 35px;
-        }
-
-        .about-image-main {
-            height: 380px;
-        }
-
-        .about-image-small {
-            width: 140px;
-            height: 145px;
-        }
-
-        .about-stamp {
-            width: 75px;
-            height: 75px;
-            right: 5px;
-            top: 20px;
-        }
-
-        .stamp-inner {
-            font-size: 7px;
-        }
-
-        .featured-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .premium-product-image {
-            height: 210px;
-        }
-
-        .premium-product-info {
-            padding: 15px 12px;
-        }
-
-        .premium-product-info h3 {
-            font-size: 16px;
-        }
-
-        .product-category {
-            font-size: 8px;
-        }
-
-        .product-price {
-            font-size: 12px;
-        }
-
-        .brand-promo {
-            grid-template-columns: 1fr;
-        }
-
-        .brand-promo-content {
-            padding: 40px 25px;
-        }
-
-        .brand-promo-image {
-            min-height: 300px;
-            height: 300px;
-        }
-
-        .promo-decoration {
-            display: none;
-        }
-
-        .value-card {
-            padding: 20px 10px;
-        }
-
-    }
-
-    @media (max-width: 400px) {
-
-        .hero-title {
-            font-size: 44px;
-        }
-
-        .hero-stats {
-            gap: 11px;
-        }
-
-        .hero-stat h3 {
-            font-size: 18px;
-        }
-
-        .premium-product-image {
-            height: 170px;
-        }
-
-        .premium-product-info h3 {
-            font-size: 14px;
-        }
-
-        .product-image-badge {
-            font-size: 7px;
-            padding: 6px;
-        }
-
-    }
-
 </style>
-@endpush
-
-
-<!-- =========================================
-     PAGE SPECIFIC JAVASCRIPT
-========================================= -->
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    // Reveal animation for homepage sections
-    const elements = document.querySelectorAll('.reveal');
-
-    if ('IntersectionObserver' in window) {
-
-        const revealObserver = new IntersectionObserver(function (entries) {
-
-            entries.forEach(function (entry) {
-
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    revealObserver.unobserve(entry.target);
-                }
-
-            });
-
-        }, {
-            threshold: 0.12
-        });
-
-        elements.forEach(function (element) {
-            revealObserver.observe(element);
-        });
-
-    } else {
-
-        elements.forEach(function (element) {
-            element.classList.add('active');
-        });
-
-    }
-
-});
-</script>
 @endpush
